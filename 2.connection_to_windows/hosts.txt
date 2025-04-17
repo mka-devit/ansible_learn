@@ -1,0 +1,10 @@
+[windows_server]
+windows2008 ansible_host=<ip>
+windows2019 ansible_host=<ip>
+
+[windows_server:vars]
+ansible_user = administration
+ansible_password = 123456789@i
+ansible_port = 5986
+ansuble_connect = winrm
+ansible_winrm_server_cert_validation = ignore

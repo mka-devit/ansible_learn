@@ -1,0 +1,5 @@
+[first_server]
+linux1 ansible_host=192.168.111.251 ansible_user=ser1 ansible_password=123 ansible_connection=ssh ansible_become=true ansible_become_method=sudo ansible_become_password=123
+
+[second_server]
+linux2 ansible_host=192.168.111.252 ansible_user=ser2 ansible_password=123 ansible_connection=ssh ansible_become=true ansible_become_method=sudo ansible_become_password=123
