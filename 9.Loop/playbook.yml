@@ -1,0 +1,54 @@
+---
+- name: Install and Enable NGINX and upload My website
+  hosts: all
+  become: yes
+
+  vars:
+    source_folder: ./MyWebSite/
+    destin_folder: /var/www/html/
+
+  tasks:
+
+    - block:  # Debian-based systems
+        - name: Install NGINX on Debian
+          apt:
+            name: nginx
+            state: present
+            update_cache: yes
+      when: ansible_facts['os_family'] == "Debian"
+
+    - block:  # RedHat-based systems
+        - name: Install NGINX on RedHat
+          yum:
+            name: nginx
+            state: present
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: Ensure NGINX is running and enabled on boot
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Copy individual website files with loop
+      copy:
+        src: "{{ source_folder }}/{{ item }}"
+        dest: "{{ destin_folder }}/{{ item }}"
+        mode: '0644'
+        owner: www-data
+        group: www-data
+      loop:
+        - index.html
+        - 1.jpg
+        - 2.jpg
+        - 3.jpg
+        - 4.jpg
+        - 5.jpg
+        - 6.jpg
+      notify: Restart NGINX
+
+  handlers:
+    - name: Restart NGINX
+      service:
+        name: nginx
+        state: restarted

@@ -1,0 +1,6 @@
+---
+
+ansible_user: ser1
+ansible_password: "123"
+ansible_become_password: "123"
+ansible_connection: ssh
