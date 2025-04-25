@@ -1,0 +1,8 @@
+---
+- name: Install and Enable NGINX and upload My website
+  hosts: all
+  become: yes
+
+  roles:
+    - role: nginx_deploy_web
+      when: ansible_system == 'Linux'
