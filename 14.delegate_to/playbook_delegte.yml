@@ -1,0 +1,52 @@
+- name: My Playbook
+  hosts: all
+  become: yes
+
+  vars:
+    mytext: "Privet ot MKA-IT"
+  
+  tasks:
+    - name: Ping test
+      ping:
+
+    - name: Ensure local log directory exists
+      file:
+        path: "{{ playbook_dir }}/log"
+        state: directory
+        mode: '0755'
+      delegate_to: localhost
+      become: no
+
+    - name: Unregister Server from Loadbalancer
+      shell: echo "This server {{ inventory_hostname }} was deregistered from our Load Balancer, node name is {{ ansible_nodename }}" >> "{{ playbook_dir }}/log/log.txt"
+      delegate_to: localhost
+      become: no
+
+    - name: Create File 1
+      copy:
+        dest: /home/file1.txt
+        content: |
+          This is file number 1
+          In English: HELLO
+          In Russian: {{ mytext }}
+      delegate_to: linux2
+      become: yes
+
+    - name: Create File 2
+      copy:
+        dest: /home/file2.txt
+        content: |
+          This is file number 2
+          In English: HELLO
+          In Russian: {{ mytext }}
+      become: yes
+
+    - name: Reboot my server
+      shell: sleep 3 && reboot now
+      async: 1
+      poll: 0
+
+    - name: Wait for my server to get online
+      wait_for_connection:
+        delay: 5
+        timeout: 40

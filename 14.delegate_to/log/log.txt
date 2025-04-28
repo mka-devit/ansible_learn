@@ -1,0 +1,2 @@
+This server linux1 was deregistered from our Load Balancer, node name is ser1
+This server linux2 was deregistered from our Load Balancer, node name is ser2
